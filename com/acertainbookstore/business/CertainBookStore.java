@@ -284,7 +284,7 @@ public class CertainBookStore implements BookStore, StockManager {
 		Collections.sort(listAllRatedBooks, new Comparator<BookStoreBook>() {
 			@Override
 			public int compare(BookStoreBook b1, BookStoreBook b2) {
-				return Long.valueOf(b1.getTotalRating()).compareTo(b2.getTotalRating());
+				return Float.valueOf(b1.getAverageRating()).compareTo(b2.getAverageRating());
 			}
 		});
 		
