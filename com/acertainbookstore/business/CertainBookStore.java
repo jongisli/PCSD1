@@ -5,6 +5,8 @@ package com.acertainbookstore.business;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -259,8 +261,41 @@ public class CertainBookStore implements BookStore, StockManager {
 
 	@Override
 	public synchronized List<Book> getTopRatedBooks(int numBooks) throws BookStoreException {
-		// TODO Auto-generated method stub
-		return null;
+		if(numBooks < 0) {
+			throw new BookStoreException("numBooks = " + numBooks 
+					+", but it must be positive");
+		}
+			
+		List<BookStoreBook> listAllRatedBooks = new ArrayList<BookStoreBook>();
+		List<Book> listKTopRated = new ArrayList<Book>();
+		Iterator<Entry<Integer, BookStoreBook>> it = bookMap.entrySet()
+				.iterator();
+		BookStoreBook book;
+		
+		while (it.hasNext()) {
+			Entry<Integer, BookStoreBook> pair = (Entry<Integer, BookStoreBook>) it
+					.next();
+			book = (BookStoreBook) pair.getValue();
+			if (book.getTotalRating()>=0) {
+				listAllRatedBooks.add(book);
+			}
+		}
+		
+		Collections.sort(listAllRatedBooks, new Comparator<BookStoreBook>() {
+			@Override
+			public int compare(BookStoreBook b1, BookStoreBook b2) {
+				return Long.valueOf(b1.getTotalRating()).compareTo(b2.getTotalRating());
+			}
+		});
+		
+		Collections.reverse(listAllRatedBooks);
+		
+		for (int i = 0; i < numBooks; i++) {
+			book = listAllRatedBooks.get(i);
+			listKTopRated.add(book.immutableBook());
+		}
+		
+		return listKTopRated;
 	}
 
 	@Override
@@ -270,6 +305,8 @@ public class CertainBookStore implements BookStore, StockManager {
 	}
 
 	@Override
+	
+	//Synchronized?
 	public void rateBooks(Set<BookRating> bookRating) throws BookStoreException {
 		if(bookRating == null) {
 			throw new BookStoreException(BookStoreConstants.NULL_INPUT);
