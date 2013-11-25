@@ -311,6 +311,37 @@ public class BookStoreTest {
 			e.printStackTrace();
 			fail();
 		}
+		
+		/*
+		 * Test a BookRating with a valid rating but an invalid 
+		 * ISBN number.
+		 */
+		exceptionThrown = false;
+		bookRatingList.add(new BookRating(-1, 3));
+		try {
+			client.rateBooks(bookRatingList);
+		} catch (BookStoreException e) {
+			exceptionThrown = true;
+		}
+		assertTrue(exceptionThrown);
+		try {
+			currentList = storeManager.getBooks();
+			assertTrue(currentList.equals(listBooks));
+		} catch (BookStoreException e) {
+			e.printStackTrace();
+			fail();
+		}
+		
+		/*
+		 * Test that the ratings above which should have failed
+		 * did not update the rating for our testBook.
+		 */
+		for (StockBook book : listBooks) {
+			if (book.getISBN() == testISBN) {
+				assertTrue(book.getTotalRating() == rating);
+				break;
+			}
+		}
 	}
 
 	/**
