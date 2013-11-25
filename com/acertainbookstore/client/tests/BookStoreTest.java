@@ -335,10 +335,37 @@ public class BookStoreTest {
 		/*
 		 * Test that the ratings above which should have failed
 		 * did not update the rating for our testBook.
+		 * 
+		 * This is needed as the totalRating field is not a part
+		 * of the ImmutableBook class and therefore not a part
+		 * of the equals method.
 		 */
 		for (StockBook book : listBooks) {
 			if (book.getISBN() == testISBN) {
 				assertTrue(book.getTotalRating() == rating);
+				break;
+			}
+		}
+		
+		/*
+		 * Lastly we rate the book again and check that the
+		 * book was only rated twice and check the aggregated
+		 * rating score is correct.
+		 */
+		Set<BookRating> newBookRatingList = new HashSet<BookRating>();
+		newBookRatingList.add(new BookRating(testISBN, rating));
+		List<StockBook> newListBooks = null;
+		try {
+			client.rateBooks(newBookRatingList);
+			newListBooks = storeManager.getBooks();
+		} catch (BookStoreException e1) {
+			e1.printStackTrace();
+			fail();
+		}
+		for (StockBook book : newListBooks) {
+			if (book.getISBN() == testISBN) {
+				assertTrue(book.getTotalRating() == 2*rating);
+				assertEquals(book.getTimesRated(), 2);
 				break;
 			}
 		}
