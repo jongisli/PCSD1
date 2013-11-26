@@ -272,6 +272,7 @@ public class CertainBookStore implements BookStore, StockManager {
 				.iterator();
 		BookStoreBook book;
 		
+		//Creates a list with all Rated Books
 		while (it.hasNext()) {
 			Entry<Integer, BookStoreBook> pair = (Entry<Integer, BookStoreBook>) it
 					.next();
@@ -281,15 +282,15 @@ public class CertainBookStore implements BookStore, StockManager {
 			}
 		}
 		
+		//Sort the list with the highest AverageRating in the start of the list
 		Collections.sort(listAllRatedBooks, new Comparator<BookStoreBook>() {
 			@Override
 			public int compare(BookStoreBook b1, BookStoreBook b2) {
-				return Float.valueOf(b1.getAverageRating()).compareTo(b2.getAverageRating());
+				return Float.valueOf(b2.getAverageRating()).compareTo(b1.getAverageRating());
 			}
 		});
-		
-		Collections.reverse(listAllRatedBooks);
-		
+
+		//Add the top K number of books to the listKTopRated list
 		for (int i = 0; i < numBooks; i++) {
 			book = listAllRatedBooks.get(i);
 			listKTopRated.add(book.immutableBook());
@@ -306,7 +307,7 @@ public class CertainBookStore implements BookStore, StockManager {
 
 	@Override
 	
-	//Synchronized?
+	//Synchronized or concurrency control?
 	public void rateBooks(Set<BookRating> bookRating) throws BookStoreException {
 		if(bookRating == null) {
 			throw new BookStoreException(BookStoreConstants.NULL_INPUT);
