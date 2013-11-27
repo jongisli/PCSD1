@@ -139,10 +139,17 @@ public class StockManagerHTTPProxy implements StockManager {
 		}
 	}
 
+	//TODO Synchronized as getBooks? 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<StockBook> getBooksInDemand() throws BookStoreException {
-		// TODO Auto-generated method stub
-		return null;
+		ContentExchange exchange = new ContentExchange();
+		String urlString = serverAddress + "/" + BookStoreMessageTag.GETBOOKSINDEMAND;
+
+		exchange.setURL(urlString);
+
+		return (List<StockBook>) BookStoreUtility.SendAndRecv(this.client,
+				exchange);
 	}
 
 }

@@ -310,13 +310,19 @@ public class CertainBookStore implements BookStore, StockManager {
 
 	@Override
 	public synchronized List<StockBook> getBooksInDemand() throws BookStoreException {
-		// TODO Auto-generated method stub
-		return null;
+		List<StockBook> listBooks = new ArrayList<StockBook>();
+		Collection<BookStoreBook> bookMapValues = bookMap.values();
+		for (BookStoreBook book : bookMapValues) {
+			if(book.hadSaleMiss()){
+				listBooks.add(book.immutableStockBook());
+			}
+		}
+		return listBooks;
 	}
 
 	@Override
 	
-	//Synchronized or concurrency control?
+	//TODO Synchronized or concurrency control?
 	public void rateBooks(Set<BookRating> bookRating) throws BookStoreException {
 		if(bookRating == null) {
 			throw new BookStoreException(BookStoreConstants.NULL_INPUT);

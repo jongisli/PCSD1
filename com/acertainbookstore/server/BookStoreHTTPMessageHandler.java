@@ -219,6 +219,21 @@ public class BookStoreHTTPMessageHandler extends AbstractHandler {
 						.serializeObjectToXMLString(bookStoreresponse);
 				response.getWriter().println(listBooksxmlString);
 				break;
+				
+			case GETBOOKSINDEMAND:
+				bookStoreresponse = new BookStoreResponse();
+				//TODO try catch here? ListBooks (getBooks stockmanager) does not
+				try {
+					bookStoreresponse.setList(CertainBookStore.getInstance()
+							.getBooksInDemand());
+				} catch (BookStoreException ex) {
+					bookStoreresponse.setException(ex);
+
+				}
+				listBooksxmlString = BookStoreUtility
+						.serializeObjectToXMLString(bookStoreresponse);
+				response.getWriter().println(listBooksxmlString);
+				break;
 
 			default:
 				System.out.println("Unhandled message tag");
