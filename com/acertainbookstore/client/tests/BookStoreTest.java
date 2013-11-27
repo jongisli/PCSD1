@@ -457,6 +457,29 @@ public class BookStoreTest {
 		}
 		assertTrue(containsTestBook2);
 		assertFalse(containsTestBook1);
+		
+		/*
+		 * Test asking for the top rated books with a negative numBooks.
+		 */
+		boolean exceptionThrown = false;
+		try {
+			books = client.getTopRatedBooks(-1);
+		} catch (BookStoreException e1) {
+			exceptionThrown = true;
+		}
+		assertTrue(exceptionThrown);
+		
+		/*
+		 * Test asking for the top rated books where numBooks is greater
+		 * than the total amount of books in the book store.
+		 */
+		exceptionThrown = false;
+		try {
+			books = client.getTopRatedBooks(1000);
+		} catch (BookStoreException e1) {
+			exceptionThrown = true;
+		}
+		assertTrue(exceptionThrown);
 
 		List<StockBook> listBooks = null;
 		try {
@@ -466,7 +489,8 @@ public class BookStoreTest {
 			fail();
 		}
 
-		boolean exceptionThrown = false;
+		//TODO: Why are we testing rateBooks() here?
+		exceptionThrown = false;
 		bookRatingList.add(new BookRating(testISBN, 6));
 		try {
 			client.rateBooks(bookRatingList);
@@ -474,6 +498,8 @@ public class BookStoreTest {
 			exceptionThrown = true;
 		}
 		assertTrue(exceptionThrown);
+		
+		//TODO: Why are we testing getBooks() here?
 		List<StockBook> currentList = null;
 		try {
 			currentList = storeManager.getBooks();

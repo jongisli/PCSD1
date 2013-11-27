@@ -290,6 +290,14 @@ public class CertainBookStore implements BookStore, StockManager {
 			}
 		});
 
+		//Throw an exception if the number of books is less than the numBooks parameter
+		if (numBooks > listAllRatedBooks.size())
+		{
+			throw new BookStoreException("numBooks = " + numBooks 
+					+", but the total amount of rated books is only "
+					+ listAllRatedBooks.size());
+		}
+		
 		//Add the top K number of books to the listKTopRated list
 		for (int i = 0; i < numBooks; i++) {
 			book = listAllRatedBooks.get(i);
