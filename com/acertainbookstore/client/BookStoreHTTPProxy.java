@@ -159,7 +159,6 @@ public class BookStoreHTTPProxy implements BookStore {
 				+ BookStoreConstants.BOOK_NUM_PARAM + "=" + urlEncodedNumBooks;
 		
 		
-		//String urlString = serverAddress + "/" + BookStoreMessageTag.GETTOPRATEDBOOKS + "/" + numBooks;
 		exchange.setMethod("GET");
 		exchange.setURL(urlString);
 
