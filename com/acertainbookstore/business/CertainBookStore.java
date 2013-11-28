@@ -322,8 +322,7 @@ public class CertainBookStore implements BookStore, StockManager {
 
 	@Override
 	
-	//TODO Synchronized or concurrency control?
-	public void rateBooks(Set<BookRating> bookRating) throws BookStoreException {
+	public synchronized void rateBooks(Set<BookRating> bookRating) throws BookStoreException {
 		if(bookRating == null) {
 			throw new BookStoreException(BookStoreConstants.NULL_INPUT);
 		}
