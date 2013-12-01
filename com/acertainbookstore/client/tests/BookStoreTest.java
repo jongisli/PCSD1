@@ -296,7 +296,13 @@ public class BookStoreTest {
 			fail();
 		}
 
+		/*
+		 * Create a new bookRatingList with one valid and one invalid
+		 * BookRating.
+		 */
 		exceptionThrown = false;
+		bookRatingList = new HashSet<BookRating>();
+		bookRatingList.add(new BookRating(testISBN, rating));
 		bookRatingList.add(new BookRating(-1, 6));
 		try {
 			client.rateBooks(bookRatingList);
@@ -317,6 +323,7 @@ public class BookStoreTest {
 		 * ISBN number.
 		 */
 		exceptionThrown = false;
+		bookRatingList = new HashSet<BookRating>();
 		bookRatingList.add(new BookRating(-1, 3));
 		try {
 			client.rateBooks(bookRatingList);
@@ -334,7 +341,7 @@ public class BookStoreTest {
 		
 		/*
 		 * Test that the ratings above which should have failed
-		 * did not update the rating for our testBook.
+		 * did not update the rating for our testBook (all or nothing).
 		 * 
 		 * This is needed as the totalRating field is not a part
 		 * of the ImmutableBook class and therefore not a part
@@ -489,7 +496,6 @@ public class BookStoreTest {
 			fail();
 		}
 
-		//TODO: Why are we testing rateBooks() here?
 		exceptionThrown = false;
 		bookRatingList.add(new BookRating(testISBN, 6));
 		try {
@@ -499,7 +505,6 @@ public class BookStoreTest {
 		}
 		assertTrue(exceptionThrown);
 		
-		//TODO: Why are we testing getBooks() here?
 		List<StockBook> currentList = null;
 		try {
 			currentList = storeManager.getBooks();
